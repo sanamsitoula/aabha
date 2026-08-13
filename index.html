@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aabha — Reservations</title>
+<meta name="description" content="Aabha is an evening hearth-dining room. Reserve your table.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14171F;
+    --surface: #1B1F2B;
+    --surface-2: #232838;
+    --text: #F2EFE9;
+    --muted: #9BA0B4;
+    --brass: #C9A24B;
+    --marigold: #E8871E;
+    --line: rgba(201,162,75,0.22);
+    --radius: 4px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    margin:0;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--brass);
+  }
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+  section{padding:96px 0;}
+
+  /* ---- nav ---- */
+  header.nav{
+    position:sticky;top:0;z-index:40;
+    background:rgba(20,23,31,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  header.nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;
+  }
+  .brand{font-family:'Fraunces', serif;font-size:1.3rem;letter-spacing:.02em;}
+  .brand span{color:var(--brass);}
+  nav.links{display:flex;gap:28px;font-size:.9rem;color:var(--muted);}
+  nav.links a{text-decoration:none;transition:color .2s;}
+  nav.links a:hover{color:var(--text);}
+  .btn{
+    display:inline-block;
+    border:1px solid var(--brass);
+    color:var(--brass);
+    padding:10px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    font-size:.85rem;
+    letter-spacing:.03em;
+    transition:background .2s, color .2s;
+  }
+  .btn:hover{background:var(--brass);color:#14171F;}
+  .btn.solid{background:var(--marigold);border-color:var(--marigold);color:#14171F;font-weight:600;}
+  .btn.solid:hover{background:#f79a3b;}
+
+  /* ---- hero ---- */
+  .hero{
+    position:relative;
+    padding:140px 0 110px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .glow{
+    position:absolute;inset:0;
+    background:radial-gradient(600px 400px at 80% 10%, rgba(232,135,30,0.16), transparent 65%),
+               radial-gradient(500px 380px at 10% 90%, rgba(201,162,75,0.10), transparent 65%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(2.6rem, 5vw, 4.4rem);line-height:1.04;}
+  .hero p.lede{color:var(--muted);font-size:1.08rem;max-width:46ch;margin-top:22px;line-height:1.6;}
+  .hero .cta-row{display:flex;gap:14px;margin-top:36px;}
+  .flame{width:100%;height:auto;opacity:.95;}
+
+  /* ---- story ---- */
+  .story .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start;}
+  .story h2{font-size:2rem;line-height:1.2;}
+  .story .col p{color:var(--muted);line-height:1.75;margin-top:16px;}
+  .story .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px;}
+  .stat b{font-family:'Fraunces',serif;font-size:1.7rem;display:block;color:var(--brass);}
+  .stat span{font-size:.78rem;color:var(--muted);}
+
+  /* ---- menu ---- */
+  .menu{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .menu-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;flex-wrap:wrap;gap:16px;}
+  .menu-head h2{font-size:2rem;}
+  .dish-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .dish{background:var(--surface);padding:30px 26px;transition:background .2s;}
+  .dish:hover{background:var(--surface-2);}
+  .dish .tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--marigold);letter-spacing:.08em;text-transform:uppercase;}
+  .dish h3{font-size:1.2rem;margin-top:10px;}
+  .dish p{color:var(--muted);font-size:.9rem;margin-top:8px;line-height:1.55;}
+  .dish .price{margin-top:16px;font-family:'JetBrains Mono',monospace;color:var(--brass);font-size:.92rem;}
+
+  /* ---- info ---- */
+  .info .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  .info h3{font-size:1.05rem;margin-bottom:12px;color:var(--brass);}
+  .info p{color:var(--muted);line-height:1.7;font-size:.95rem;}
+
+  /* ---- reservation: printed invitation card ---- */
+  .reserve{background:var(--surface);border-top:1px solid var(--line);}
+  .reserve .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start;}
+  .reserve-intro h2{font-size:2rem;line-height:1.2;}
+  .reserve-intro p{color:var(--muted);margin-top:18px;line-height:1.7;}
+
+  .card{
+    position:relative;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:40px 40px 34px;
+  }
+  .card::before, .card::after{
+    content:"";
+    position:absolute;
+    top:0;bottom:0;
+    width:22px;
+    background-image:radial-gradient(circle, var(--surface) 5px, transparent 5.5px);
+    background-size:22px 22px;
+    background-repeat:repeat-y;
+  }
+  .card::before{left:-11px;}
+  .card::after{right:-11px;}
+  .card .stub-label{
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px dashed var(--line);
+    padding-bottom:16px;margin-bottom:26px;
+  }
+  .card .stub-label .eyebrow{margin-bottom:4px;}
+  .card .stub-label .ref{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:.78rem;}
+
+  form.booking{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+  form.booking .full{grid-column:1 / -1;}
+  .field{display:flex;flex-direction:column;gap:8px;}
+  .field label{font-size:.78rem;color:var(--muted);letter-spacing:.03em;}
+  .field input, .field select, .field textarea{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 14px;
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    font-size:.94rem;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--brass);}
+  .field textarea{resize:vertical;min-height:70px;}
+
+  .seal-btn{
+    justify-self:start;
+    margin-top:6px;
+    width:150px;height:56px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(160deg, var(--marigold), #b5620f);
+    color:#14171F;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(232,135,30,0.25);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .seal-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(232,135,30,0.32);}
+  .seal-btn:disabled{opacity:.55;cursor:progress;transform:none;}
+
+  .status-msg{
+    margin-top:18px;
+    font-size:.88rem;
+    padding:12px 16px;
+    border-radius:6px;
+    display:none;
+    line-height:1.5;
+  }
+  .status-msg.show{display:block;}
+  .status-msg.ok{background:rgba(76,175,124,0.12);color:#8fd6ab;border:1px solid rgba(76,175,124,0.3);}
+  .status-msg.err{background:rgba(224,90,90,0.12);color:#f2a3a3;border:1px solid rgba(224,90,90,0.3);}
+
+  footer{border-top:1px solid var(--line);padding:44px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  footer .muted{color:var(--muted);font-size:.82rem;}
+
+  @media (max-width:860px){
+    section{padding:64px 0;}
+    .hero .wrap, .story .wrap, .reserve .wrap{grid-template-columns:1fr;}
+    .dish-grid{grid-template-columns:1fr;}
+    .info .wrap{grid-template-columns:1fr;}
+    form.booking{grid-template-columns:1fr;}
+    nav.links{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">AABHA <span>·</span></div>
+    <nav class="links">
+      <a href="#story">Story</a>
+      <a href="#menu">Menu</a>
+      <a href="#info">Visit</a>
+    </nav>
+    <a href="#reserve" class="btn">Reserve a table</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Hearth dining · Kathmandu</p>
+      <h1>Dinner, held by firelight.</h1>
+      <p class="lede">Aabha means glow. We cook over an open hearth and set a small number of tables each evening — a slow, unhurried room for a proper meal.</p>
+      <div class="cta-row">
+        <a href="#reserve" class="btn solid">Reserve a table</a>
+        <a href="#menu" class="btn">See the menu</a>
+      </div>
+    </div>
+    <svg class="flame" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="160" cy="160" r="118" stroke="#C9A24B" stroke-opacity="0.25" stroke-width="1"/>
+      <circle cx="160" cy="160" r="86" stroke="#C9A24B" stroke-opacity="0.35" stroke-width="1"/>
+      <path d="M160 60c22 34 8 46 26 66 14 16 22 32 22 52 0 38-30 68-68 68s-68-30-68-68c0-24 12-40 22-56 8 20 20 24 20 8 0-16-14-30-14-54 0-24 20-42 20-42s18 18 40 26z"
+            fill="url(#g)" opacity="0.9"/>
+      <defs>
+        <linearGradient id="g" x1="90" y1="60" x2="220" y2="246" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#E8871E"/>
+          <stop offset="1" stop-color="#C9A24B"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">The room</p>
+      <h2>Twelve tables. One hearth. No shortcuts.</h2>
+    </div>
+    <div class="col">
+      <p>Aabha seats twelve tables a night in a single room built around a wood-fed hearth. Everything that reaches the table — the bread, the vegetables, the meat — passes over that fire.</p>
+      <p>Menus are short and change with what the valley's growers bring us that week. We hold every reservation for fifteen minutes past its time, then release it, so book the slot you mean to keep.</p>
+      <div class="stats">
+        <div class="stat"><b>12</b><span>tables nightly</span></div>
+        <div class="stat"><b>1</b><span>open hearth</span></div>
+        <div class="stat"><b>6</b><span>days a week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <div>
+        <p class="eyebrow">This week's fire</p>
+        <h2>A short, changing menu</h2>
+      </div>
+      <p class="muted" style="color:var(--muted);max-width:34ch;">Set courses, shared plates. Full menu shown at the table.</p>
+    </div>
+    <div class="dish-grid">
+      <div class="dish">
+        <span class="tag">Hearth</span>
+        <h3>Smoked mountain trout</h3>
+        <p>Charred over embers, finished with mustard oil and green chili.</p>
+        <div class="price">NPR 950</div>
+      </div>
+      <div class="dish">
+        <span class="tag">Hearth</span>
+        <h3>Ash-roasted duck</h3>
+        <p>Slow-roasted, timur pepper crust, stone-ground chutney.</p>
+        <div class="price">NPR 1,450</div>
+      </div>
+      <div class="dish">
+        <span class="tag">Grain</span>
+        <h3>Buckwheat & nettle</h3>
+        <p>Himalayan buckwheat, wild nettle, aged yak cheese.</p>
+        <div class="price">NPR 780</div>
+      </div>
+      <div class="dish">
+        <span class="tag">Grain</span>
+        <h3>Charred cauliflower</h3>
+        <p>Whole-roasted, sesame, burnt lime, fresh coriander.</p>
+        <div class="price">NPR 650</div>
+      </div>
+      <div class="dish">
+        <span class="tag">Sweet</span>
+        <h3>Sel roti custard</h3>
+        <p>Warm custard, torched sel roti crumb, wild honey.</p>
+        <div class="price">NPR 480</div>
+      </div>
+      <div class="dish">
+        <span class="tag">Sweet</span>
+        <h3>Rakshi-soaked pear</h3>
+        <p>Slow-poached pear, local rakshi, toasted walnut.</p>
+        <div class="price">NPR 520</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="info" id="info">
+  <div class="wrap">
+    <div>
+      <h3>Hours</h3>
+      <p>Tuesday – Sunday<br>6:00 PM – 10:30 PM<br>Closed Mondays</p>
+    </div>
+    <div>
+      <h3>Address</h3>
+      <p>14 Kupondole Lane<br>Lalitpur, Kathmandu Valley<br>Nepal</p>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <p>+977 1 555 0142<br>hello@aabha.example<br>Private hire available on request</p>
+    </div>
+  </div>
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="wrap">
+    <div class="reserve-intro">
+      <p class="eyebrow">Reservations</p>
+      <h2>Request your table</h2>
+      <p>Fill in the card. We hold each table for fifteen minutes past its time. You'll get a reference number once your request is confirmed by the kitchen.</p>
+    </div>
+
+    <div class="card">
+      <div class="stub-label">
+        <div>
+          <p class="eyebrow">Reservation card</p>
+        </div>
+        <span class="ref" id="cardRef">REF — PENDING</span>
+      </div>
+
+      <form class="booking" id="bookingForm" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="guests">Guests</label>
+          <select id="guests" name="guests" required>
+            <option value="">Select</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="date">Date</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+        <div class="field">
+          <label for="time">Time</label>
+          <select id="time" name="time" required>
+            <option value="">Select</option>
+            <option>18:00</option><option>18:30</option><option>19:00</option>
+            <option>19:30</option><option>20:00</option><option>20:30</option>
+            <option>21:00</option><option>21:30</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="requests">Notes for the kitchen (optional)</label>
+          <textarea id="requests" name="requests" placeholder="Allergies, occasion, seating preference…"></textarea>
+        </div>
+        <div class="full">
+          <button type="submit" class="seal-btn" id="submitBtn">Reserve</button>
+          <div class="status-msg" id="statusMsg"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="font-size:1rem;">AABHA</div>
+    <p class="muted">© 2026 Aabha. Built as a multi-tier reference architecture demo.</p>
+  </div>
+</footer>
+
+<script>
+  // Prevent selecting a past date
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  const form = document.getElementById('bookingForm');
+  const statusMsg = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+  const cardRef = document.getElementById('cardRef');
+
+  // The booking API lives on the application tier, reached through the
+  // load balancer at /api/booking.php (see backend/api/booking.php).
+  const API_ENDPOINT = 'api/booking.php';
+
+  function showStatus(kind, message) {
+    statusMsg.textContent = message;
+    statusMsg.className = 'status-msg show ' + kind;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusMsg.className = 'status-msg';
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      guests: document.getElementById('guests').value,
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value,
+      requests: document.getElementById('requests').value.trim()
+    };
+
+    if (!payload.name || !payload.phone || !payload.email || !payload.guests || !payload.date || !payload.time) {
+      showStatus('err', 'Please fill in all required fields.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        showStatus('ok', 'Reservation received. Reference ' + data.reference + '. We will confirm by email shortly.');
+        cardRef.textContent = 'REF — ' + data.reference;
+        form.reset();
+        dateInput.setAttribute('min', today);
+      } else {
+        showStatus('err', data.message || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      showStatus('err', 'Could not reach the reservation service. Please try again shortly.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Reserve';
+    }
+  });
+</script>
+
+</body>
+</html>

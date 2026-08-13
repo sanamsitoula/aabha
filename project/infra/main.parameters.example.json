@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "projectName": { "value": "aabha" },
+    "environmentName": { "value": "dev" },
+    "adminUsername": { "value": "azureuser" },
+    "adminSshPublicKey": { "value": "ssh-rsa AAAA...replace-with-your-public-key... user@host" },
+    "mysqlAdminUsername": { "value": "mysqladmin" },
+    "mysqlAdminPassword": { "value": "REPLACE_WITH_A_STRONG_PASSWORD" },
+    "appDbPassword": { "value": "REPLACE_WITH_A_STRONG_PASSWORD" },
+    "vmssSku": { "value": "Standard_B2s" },
+    "vmssInstanceCount": { "value": 2 },
+    "vmssMinCount": { "value": 2 },
+    "vmssMaxCount": { "value": 6 },
+    "mysqlSkuName": { "value": "Standard_B1ms" },
+    "mysqlSkuTier": { "value": "Burstable" }
+  }
+}
