@@ -15,8 +15,8 @@
 define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');       // e.g. private IP / FQDN of MySQL flexible server
 define('DB_PORT', getenv('DB_PORT') ?: '3306');
 define('DB_NAME', getenv('DB_NAME') ?: 'restaurant_db');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_USER', getenv('DB_USER') ?: 'aabha');
+define('DB_PASS', getenv('DB_PASS') ?: 'Nepal@123');
 
 // --- App behaviour ---
 define('APP_ENV', getenv('APP_ENV') ?: 'development');     // development | production
